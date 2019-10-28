@@ -5,6 +5,8 @@ import os
 import sys
 import yaml
 
+from six.moves import input
+
 BEVERAGES = ['Coffee', 'Juice', 'Tea', 'Water']
 ADDITIONAL_INGREDIENTS = ['Cream', 'Cinnamon', 'Milk', 'Sugar']
 USER_POSITIONS = ['Manager', 'Salesman']
@@ -14,6 +16,7 @@ class UserCommon(object):
     """
     Main User object
     """
+
     def __init__(self, name):
         self.name = name
 
@@ -145,7 +148,7 @@ def get_args():
 
 
 def interactive_workflow():
-    name = raw_input('Provide your Name, please: ')
+    name = input('Provide your Name, please: ')
     _display_position_selector()
     option = _get_position_choice()
     if option == 1:
@@ -163,7 +166,7 @@ def interactive_workflow():
     elif option == 2:
         _display_manager_menu()
         option_manager = _get_manager_choice()
-        if option_manager==1:
+        if option_manager == 1:
             Manager(name).generate_sales_report()
         else:
             _terminate()
@@ -182,7 +185,7 @@ def _get_position_choice():
     is_valid = False
     while not is_valid:
         try:
-            input_value = raw_input('Option selected: ')
+            input_value = input('Option selected: ')
             choice = int(input_value)
             if 0 <= choice <= 2:
                 is_valid = True
@@ -193,17 +196,19 @@ def _get_position_choice():
             print('{} is not a valid option. Please choose from 0 to 2'.format(input_value))
     return choice
 
+
 def _display_salesman_menu():
     print('Select your action:')
     print('1. Add beverage')
     print('2. Get report about your sales')
     print('Press 0 for exit')
 
+
 def _get_salesman_choice():
     is_valid = False
     while not is_valid:
         try:
-            input_value = raw_input('Option selected: ')
+            input_value = input('Option selected: ')
             choice = int(input_value)
             if 0 <= choice <= 2:
                 is_valid = True
@@ -214,17 +219,19 @@ def _get_salesman_choice():
             print('{} is not a valid option. Please choose from 0 to 2'.format(input_value))
     return choice
 
+
 def _display_manager_menu():
     print('Select your action:')
     print('1. Get report about all salesman\'s')
     print('0. Exit')
     print('Press 0 for exit')
 
+
 def _get_manager_choice():
     is_valid = False
     while not is_valid:
         try:
-            input_value = raw_input('Option selected: ')
+            input_value = input('Option selected: ')
             choice = int(input_value)
             if 0 <= choice <= 1:
                 is_valid = True
@@ -235,9 +242,11 @@ def _get_manager_choice():
             print('{} is not a valid option. Please choose from 0 to 1'.format(input_value))
     return choice
 
+
 def _terminate():
     print('Thank you for using our CoffeeForMe Tool !')
     exit(0)
+
 
 def logging_init(file_path):
     global logger
