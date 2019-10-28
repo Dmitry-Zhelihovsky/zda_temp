@@ -27,6 +27,7 @@ class Manager(UserCommon):
         Method for generating report about all salesman's.
         :return: file
         """
+        # TODO: implement
         pass
 
 
@@ -152,10 +153,10 @@ def interactive_workflow():
         option_salesman = _get_salesman_choice()
         if option_salesman == 1:
             pass
-            # Collect beverage detail and go with:
+            # TODO: Collect beverage detail and go with:
             # Salesman(name).add_beverage()
         elif option_salesman == 2:
-            # Collect path and go with:
+            # TODO: Collect path and go with:
             Salesman(name).export_salesman_details('ttt.txt')
         else:
             _terminate()
@@ -235,7 +236,6 @@ def _get_manager_choice():
     return choice
 
 def _terminate():
-    print('______________________________________________________________')
     print('Thank you for using our CoffeeForMe Tool !')
     exit(0)
 
