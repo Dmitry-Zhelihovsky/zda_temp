@@ -11,6 +11,9 @@ USER_POSITIONS = ['Manager', 'Salesman']
 
 
 class UserCommon(object):
+    """
+    Main User object
+    """
     def __init__(self, name):
         self.name = name
 
@@ -20,6 +23,10 @@ class Manager(UserCommon):
         super(Manager, self).__init__(name)
 
     def generate_sales_report(self):
+        """
+        Method for generating report about all salesman's.
+        :return: file
+        """
         pass
 
 
@@ -29,6 +36,13 @@ class Salesman(UserCommon):
         self.beverage_counter = _init_counter(name)
 
     def add_beverage(self, beverage_type, add_ingrdts, price, sale_details_file):
+        """
+        Method to add beverage records
+        :param beverage_type: str
+        :param add_ingrdts: str
+        :param price: float
+        :param sale_details_file: file_path
+        """
         beverage_record = {self.beverage_counter: {'SoldBy': str(self.name).lower(),
                                                    'BeverageDetails': {'Type': beverage_type,
                                                                        'Ingredients': add_ingrdts, 'Price': price}}}
@@ -57,6 +71,10 @@ class Salesman(UserCommon):
         print('Your beverage with price {} was successfully saved!'.format(price))
 
     def export_salesman_details(self, file_path):
+        """
+        Method for generating report about particular Salesman sales into defined file_path.
+        :param file_path: file_path
+        """
         all_records = _get_all_records()
         if len(all_records) == 0:
             logger.info('No records is available. Skipping export salesman details.')
@@ -126,8 +144,100 @@ def get_args():
 
 
 def interactive_workflow():
-    print('You\'ve entered Interactive mode. You\'ll see some further actions here in some nearest future...')
+    name = raw_input('Provide your Name, please: ')
+    _display_position_selector()
+    option = _get_position_choice()
+    if option == 1:
+        _display_salesman_menu()
+        option_salesman = _get_salesman_choice()
+        if option_salesman == 1:
+            pass
+            # Collect beverage detail and go with:
+            # Salesman(name).add_beverage()
+        elif option_salesman == 2:
+            # Collect path and go with:
+            Salesman(name).export_salesman_details('ttt.txt')
+        else:
+            _terminate()
+    elif option == 2:
+        _display_manager_menu()
+        option_manager = _get_manager_choice()
+        if option_manager==1:
+            Manager(name).generate_sales_report()
+        else:
+            _terminate()
+    elif option == 0:
+        _terminate()
 
+
+def _display_position_selector():
+    print('Select your User Position:')
+    print('1. Salesman')
+    print('2. Manager')
+    print('Press 0 for exit')
+
+
+def _get_position_choice():
+    is_valid = False
+    while not is_valid:
+        try:
+            input_value = raw_input('Option selected: ')
+            choice = int(input_value)
+            if 0 <= choice <= 2:
+                is_valid = True
+            else:
+                print('{} is not a valid option. Please choose from 0 to 2'.format(input_value))
+                logger.info('Interactive input on position selection: {}'.format(input_value))
+        except Exception:
+            print('{} is not a valid option. Please choose from 0 to 2'.format(input_value))
+    return choice
+
+def _display_salesman_menu():
+    print('Select your action:')
+    print('1. Add beverage')
+    print('2. Get report about your sales')
+    print('Press 0 for exit')
+
+def _get_salesman_choice():
+    is_valid = False
+    while not is_valid:
+        try:
+            input_value = raw_input('Option selected: ')
+            choice = int(input_value)
+            if 0 <= choice <= 2:
+                is_valid = True
+            else:
+                print('{} is not a valid option. Please choose from 0 to 2'.format(input_value))
+                logger.info('Interactive input on salesman selection: {}'.format(input_value))
+        except Exception:
+            print('{} is not a valid option. Please choose from 0 to 2'.format(input_value))
+    return choice
+
+def _display_manager_menu():
+    print('Select your action:')
+    print('1. Get report about all salesman\'s')
+    print('0. Exit')
+    print('Press 0 for exit')
+
+def _get_manager_choice():
+    is_valid = False
+    while not is_valid:
+        try:
+            input_value = raw_input('Option selected: ')
+            choice = int(input_value)
+            if 0 <= choice <= 1:
+                is_valid = True
+            else:
+                print('{} is not a valid option. Please choose from 0 to 1'.format(input_value))
+                logger.info('Interactive input on manager\'s option selection: {}'.format(input_value))
+        except Exception:
+            print('{} is not a valid option. Please choose from 0 to 1'.format(input_value))
+    return choice
+
+def _terminate():
+    print('______________________________________________________________')
+    print('Thank you for using our CoffeeForMe Tool !')
+    exit(0)
 
 def logging_init(file_path):
     global logger
@@ -156,7 +266,8 @@ def validate_args(args):
         args.beverage_price = float(args.beverage_price)
     except:
         raise TypeError(
-            'Beverage price provided [{}] should have floating point value! For example - 11.23'.format(args.beverage_price))
+            'Beverage price provided [{}] should have floating point value! For example - 11.23'.format(
+                args.beverage_price))
 
 
 def _init_counter(name):
