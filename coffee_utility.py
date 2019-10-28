@@ -174,11 +174,42 @@ def interactive_workflow():
         _terminate()
 
 
+def logging_init(file_path):
+    global logger
+    logger = logging.getLogger('CoffeeTool log')
+    logger.setLevel(logging.INFO)
+
+    fh = logging.FileHandler(file_path)
+    formatter = logging.Formatter('%(asctime)s [%(module)s]/[%(funcName)s] %(levelname)s: %(message)s')
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+
+def validate_args(args):
+    if args.beverage_type not in BEVERAGES:
+        raise TypeError(
+            'Beverage value provided [{}] should be one of the following {}'.format(args.beverage_type, BEVERAGES))
+    if args.additional_ingredients not in ADDITIONAL_INGREDIENTS:
+        raise TypeError(
+            'Ingredient provided [{}] should be one of the following {}'.format(args.additional_ingredients,
+                                                                                ADDITIONAL_INGREDIENTS))
+    if args.user_position not in USER_POSITIONS:
+        raise TypeError(
+            'User position provided [{}] should be one of the following {}'.format(args.user_position, USER_POSITIONS))
+
+    try:
+        args.beverage_price = float(args.beverage_price)
+    except:
+        raise TypeError(
+            'Beverage price provided [{}] should have floating point value! For example - 11.23'.format(
+                args.beverage_price))
+
+
 def _display_position_selector():
-    print('Select your User Position:')
-    print('1. Salesman')
-    print('2. Manager')
-    print('Press 0 for exit')
+    print('Select your User Position:\n'
+          '1. Salesman\n'
+          '2. Manager\n'
+          'Press 0 for exit')
 
 
 def _get_position_choice():
@@ -198,10 +229,10 @@ def _get_position_choice():
 
 
 def _display_salesman_menu():
-    print('Select your action:')
-    print('1. Add beverage')
-    print('2. Get report about your sales')
-    print('Press 0 for exit')
+    print('Select your action:\n'
+          '1. Add beverage\n'
+          '2. Get report about your sales\n'
+          'Press 0 for exit')
 
 
 def _get_salesman_choice():
@@ -243,42 +274,6 @@ def _get_manager_choice():
     return choice
 
 
-def _terminate():
-    print('Thank you for using our CoffeeForMe Tool !')
-    exit(0)
-
-
-def logging_init(file_path):
-    global logger
-    logger = logging.getLogger('CoffeeTool log')
-    logger.setLevel(logging.INFO)
-
-    fh = logging.FileHandler(file_path)
-    formatter = logging.Formatter('%(asctime)s [%(module)s]/[%(funcName)s] %(levelname)s: %(message)s')
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
-
-
-def validate_args(args):
-    if args.beverage_type not in BEVERAGES:
-        raise TypeError(
-            'Beverage value provided [{}] should be one of the following {}'.format(args.beverage_type, BEVERAGES))
-    if args.additional_ingredients not in ADDITIONAL_INGREDIENTS:
-        raise TypeError(
-            'Ingredient provided [{}] should be one of the following {}'.format(args.additional_ingredients,
-                                                                                ADDITIONAL_INGREDIENTS))
-    if args.user_position not in USER_POSITIONS:
-        raise TypeError(
-            'User position provided [{}] should be one of the following {}'.format(args.user_position, USER_POSITIONS))
-
-    try:
-        args.beverage_price = float(args.beverage_price)
-    except:
-        raise TypeError(
-            'Beverage price provided [{}] should have floating point value! For example - 11.23'.format(
-                args.beverage_price))
-
-
 def _init_counter(name):
     try:
         with open('./records.yml', 'r') as records_file:
@@ -296,6 +291,11 @@ def _get_all_records():
         return data[0]
     except:
         return []
+
+
+def _terminate():
+    print('Thank you for using our CoffeeForMe Tool !')
+    exit(0)
 
 
 if __name__ == '__main__':
