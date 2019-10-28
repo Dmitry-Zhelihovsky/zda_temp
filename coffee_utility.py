@@ -66,7 +66,9 @@ class Salesman(UserCommon):
                                                                                                          beverage_type,
                                                                                                          add_ingrdts,
                                                                                                          price))
-                logger.info('Sale details have been saved to {}'.format(sale_details_file))
+                success_msg = 'Sale details have been saved to {}'.format(sale_details_file)
+                print(success_msg)
+                logger.info(success_msg)
             except IOError as err:
                 logger.critical(
                     'Could not write sale details to a file {}. Error: {}'.format(sale_details_file, str(err)))
@@ -102,7 +104,9 @@ class Salesman(UserCommon):
                 for sale in salesman_records:
                     output.append(str(sale['BeverageDetails']))
                 salesman_file.write('\n'.join(output))
-            logger.info('Salesman {} sales details have been saved to {}'.format(self.name, file_path))
+            success_msg = 'Salesman {} sales details have been saved to {}'.format(self.name, file_path)
+            print(success_msg)
+            logger.info(success_msg)
         except IOError as err:
             logger.critical(
                 'Could not write sales details to a file {}. Error: {}'.format(file_path, str(err)))
@@ -160,16 +164,14 @@ def interactive_workflow():
             # Salesman(name).add_beverage()
         elif option_salesman == 2:
             # TODO: Collect path and go with:
-            Salesman(name).export_salesman_details('ttt.txt')
-        else:
-            _terminate()
+            Salesman(name).export_salesman_details('path_for_details_collected.txt')
+        _terminate()
     elif option == 2:
         _display_manager_menu()
         option_manager = _get_manager_choice()
         if option_manager == 1:
             Manager(name).generate_sales_report()
-        else:
-            _terminate()
+        _terminate()
     elif option == 0:
         _terminate()
 
@@ -252,10 +254,10 @@ def _get_salesman_choice():
 
 
 def _display_manager_menu():
-    print('Select your action:')
-    print('1. Get report about all salesman\'s')
-    print('0. Exit')
-    print('Press 0 for exit')
+    print('Select your action:\n'
+          '1. Get report about all salesman\'s\n'
+          '0. Exit\n'
+          'Press 0 for exit')
 
 
 def _get_manager_choice():
